@@ -6,6 +6,7 @@ import Profile from '../components/Profile'
 import Home from '../components/Home'
 import Register from '../components/Register'
 import NotFound from '../components/NotFound'
+import Nav from '../components/Nav'
 
 
 class App extends React.Component{
@@ -13,6 +14,20 @@ class App extends React.Component{
     super()
     this.state={
       currentUser: null
+    }
+  }
+
+  componentDidMount = () => {
+    if(localStorage.getItem('jwt')){
+      fetch('http://localhost:3000/profile',{
+        headers: {
+          "Authorization": localStorage.getItem('jwt')
+        }
+      }).then(response => response.json())
+      .then(user => {
+        console.log(user)
+        this.updateUser(user)
+      })
     }
   }
 
@@ -25,7 +40,11 @@ class App extends React.Component{
   render(){
     return (
       <>
+        
+        <Nav user={this.state.currentUser} updateUser={this.updateUser}/>
+        
         <Switch>
+
           <Route exact path='/' render={()=>{
             return <Home/>
           }}/>

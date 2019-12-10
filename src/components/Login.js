@@ -39,7 +39,10 @@ class Login extends React.Component{
             .then(response => response.json())
             .then(data => {
                 alert(data.message)
-                console.log(data.user)
+                console.log(data)
+                // save token in local storage
+                localStorage.setItem("jwt", data.token)
+                // Update state with current user
                 this.props.updateUser(data.user)
             })
     }
